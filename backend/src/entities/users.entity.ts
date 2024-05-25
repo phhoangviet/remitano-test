@@ -2,7 +2,12 @@ import { IsNotEmpty } from 'class-validator';
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '@interfaces/users.interface';
 
-@Entity()
+@Entity({
+  name: 'user',
+  orderBy: {
+    createdAt: 'DESC',
+  },
+})
 export class UserEntity extends BaseEntity implements User {
   @PrimaryGeneratedColumn()
   id: number;

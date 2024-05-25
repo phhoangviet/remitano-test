@@ -7,9 +7,10 @@ import hpp from 'hpp';
 import compression from 'compression';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from './configs';
 import { logger } from './utils/logger';
-import { ErrorMiddleware } from './middlewares/error.middle';
-import { dbConnection } from './database';
-// import { dbConnection } from '@database';
+import { ErrorMiddleware } from './middlewares/error.middleware';
+import { Routes } from './interfaces/routes.interface';
+import Container from 'typedi';
+import { TypeOrmDBConnectionHolder } from './services/db.service';
 // import { Routes } from '@interfaces/routes.interface';
 
 export class App {
@@ -17,14 +18,14 @@ export class App {
   public env: string;
   public port: string | number;
 
-  constructor() {
+  constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
 
     this.connectToDatabase();
     this.initializeMiddlewares();
-    // this.initializeRoutes(routes);
+    this.initializeRoutes(routes);
     this.initializeErrorHandling();
   }
 
@@ -42,7 +43,8 @@ export class App {
   }
 
   private async connectToDatabase() {
-    await dbConnection();
+    const db = Container.get(TypeOrmDBConnectionHolder);
+    await db.initialize('interview-test');
   }
 
   private initializeMiddlewares() {
@@ -55,11 +57,11 @@ export class App {
     this.app.use(cookieParser());
   }
 
-  //   private initializeRoutes(routes: Routes[]) {
-  //     routes.forEach(route => {
-  //       this.app.use('/', route.router);
-  //     });
-  //   }
+  private initializeRoutes(routes: Routes[]) {
+    routes.forEach(route => {
+      this.app.use('/', route.router);
+    });
+  }
 
   private initializeErrorHandling() {
     this.app.use(ErrorMiddleware);
