@@ -4,7 +4,7 @@ import { SOCKET_PORT, SOCKET_TRANSPORTS } from './configs';
 import { Server } from 'socket.io';
 import http from 'http';
 export class Socket {
-  private _instance: express.Application;
+  private _instance: http.Server;
   private io: Server;
 
   public getInstance(): Server {
@@ -14,16 +14,15 @@ export class Socket {
     return this.io;
   }
 
-  public async start(): Promise<express.Application> {
+  public async start(): Promise<http.Server> {
     try {
-      this._instance = express();
+      const socketApp = express();
       const socketConfig = this.socketConfig();
-      const httpServer = http.createServer(this._instance);
+      const httpServer = http.createServer(socketApp);
       const io = new Server(httpServer, socketConfig);
       this.io = io;
       io.on('connection', (socket: any) => {
         // registerEvents(io, socket);
-
         setTimeout(async () => {
           if (!socket.auth) {
             logger.info(`Disconnecting socket: ${socket.id}`);
@@ -31,6 +30,8 @@ export class Socket {
           }
         }, 5000);
       });
+      this._instance = httpServer;
+
       this._instance.listen(+SOCKET_PORT || 8888, () => {
         logger.info(`=================================`);
         logger.info(`🚀 Socket listening on the port ${SOCKET_PORT}`);
