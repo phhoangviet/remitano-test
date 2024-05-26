@@ -3,6 +3,7 @@ import { logger } from './utils/logger';
 import { SOCKET_PORT, SOCKET_TRANSPORTS } from './configs';
 import { Server } from 'socket.io';
 import http from 'http';
+import { registerEvents } from './interfaces/socket/register.interface';
 export class Socket {
   private _instance: http.Server;
   private io: Server;
@@ -22,16 +23,15 @@ export class Socket {
       const io = new Server(httpServer, socketConfig);
       this.io = io;
       io.on('connection', (socket: any) => {
-        // registerEvents(io, socket);
+        registerEvents(io, socket);
         setTimeout(async () => {
           if (!socket.auth) {
-            logger.info(`Disconnecting socket: ${socket.id}`);
+            // logger.info(`Disconnecting socket: ${socket.id}`);
             await socket.disconnect('Unauthorized');
           }
-        }, 5000);
+        }, 3000);
       });
       this._instance = httpServer;
-
       this._instance.listen(+SOCKET_PORT || 8888, () => {
         logger.info(`=================================`);
         logger.info(`🚀 Socket listening on the port ${SOCKET_PORT}`);
