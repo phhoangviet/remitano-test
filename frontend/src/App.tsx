@@ -1,20 +1,15 @@
-import React from "react";
 import "./App.css";
-import { Provider } from "react-redux";
-import store from "./store";
-import history from "./history";
-import AppRoutes from "./routers";
-import { ConnectedRouter } from "connected-react-router";
+import { AuthProvider } from "./providers/auth/AuthProvider";
+import HomePage from "./page/Home";
+import { ToastProvider } from "./providers/toast/ToastProvider";
 
 function App() {
   return (
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <div className="App">
-          <AppRoutes />
-        </div>
-      </ConnectedRouter>
-    </Provider>
+    <ToastProvider>
+      <AuthProvider>
+        <HomePage />
+      </AuthProvider>
+    </ToastProvider>
   );
 }
 
