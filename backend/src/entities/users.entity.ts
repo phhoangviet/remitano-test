@@ -8,7 +8,7 @@ import { User } from '@interfaces/users.interface';
     createdAt: 'DESC',
   },
 })
-export class UserEntity extends BaseEntity implements User {
+export class UserEntity implements User {
   @PrimaryGeneratedColumn()
   id: number;
 

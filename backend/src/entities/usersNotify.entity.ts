@@ -1,5 +1,6 @@
 import { Entity, Unique, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
 import { NotificationEntity } from './notify.entity';
+import { UserNotify } from '@/interfaces/user_notify.interface';
 @Entity({
   name: 'user_notifications',
   orderBy: {
@@ -7,8 +8,8 @@ import { NotificationEntity } from './notify.entity';
   },
 })
 @Unique('UNIQUE_USER_NOTIFICATION_ENTITY', ['id'])
-export class UserNotificationEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+export class UserNotificationsEntity implements UserNotify {
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({

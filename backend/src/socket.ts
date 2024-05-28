@@ -20,8 +20,9 @@ export class Socket {
       const socketApp = express();
       const socketConfig = this.socketConfig();
       const httpServer = http.createServer(socketApp);
-      const io = new Server(httpServer, socketConfig);
+      const io = new Server(httpServer, { ...socketConfig, cookie: true, cors: { origin: 'http://localhost:3001' } });
       this.io = io;
+
       io.on('connection', (socket: any) => {
         registerEvents(io, socket);
         setTimeout(async () => {

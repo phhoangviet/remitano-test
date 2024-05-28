@@ -47,7 +47,9 @@ export class App {
   }
 
   private initializeMiddlewares() {
-    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
+    this.app.use(cors({ origin: 'http://localhost:3001', credentials: CREDENTIALS, exposedHeaders: ['X-Set-Cookie'] }));
+    // this.app.use('*', cors({ origin: ORIGIN, credentials: CREDENTIALS }));
+
     this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());

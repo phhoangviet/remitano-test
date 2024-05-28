@@ -1,4 +1,6 @@
-import { PrimaryGeneratedColumn, Column, Entity, Unique, BaseEntity } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, Unique, BaseEntity, CreateDateColumn, JoinColumn, ManyToOne, UpdateDateColumn } from 'typeorm';
+import { UserEntity } from './users.entity';
+import { Notification } from '@/interfaces/notify.interface';
 
 @Entity({
   name: 'notifications',
@@ -6,9 +8,8 @@ import { PrimaryGeneratedColumn, Column, Entity, Unique, BaseEntity } from 'type
     createdAt: 'DESC',
   },
 })
-@Unique('UNIQUE_NOTIFICATION_ENTITY', ['id'])
-export class NotificationEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+export class NotificationEntity implements Notification {
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
@@ -67,4 +68,17 @@ export class NotificationEntity extends BaseEntity {
     nullable: true,
   })
   createdById?: number | null;
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({
+    name: 'created_by_id',
+    referencedColumnName: 'id',
+  })
+  user: UserEntity | null;
+  @Column()
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Column()
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

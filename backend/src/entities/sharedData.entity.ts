@@ -1,5 +1,6 @@
-import { PrimaryGeneratedColumn, Column, Entity, Unique, BaseEntity, ManyToOne, JoinColumn } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, Unique, BaseEntity, ManyToOne, JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { UserEntity } from './users.entity';
+import { SharedData } from '@/interfaces/shared_data.interface';
 
 @Entity({
   name: 'shared_data',
@@ -7,43 +8,28 @@ import { UserEntity } from './users.entity';
     createdAt: 'DESC',
   },
 })
-@Unique('UNIQUE_SHARED_ENTITY', ['id'])
-export class SharedDataEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('increment')
+export class SharedDataEntity implements SharedData {
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
     type: 'text',
     name: 'title',
-    nullable: true,
   })
-  title?: string | null;
+  title: string;
 
   @Column({
     type: 'text',
     name: 'url',
-    nullable: true,
   })
-  url?: string | null;
+  url: string;
+
   @Column({
     type: 'text',
     name: 'content',
     nullable: true,
   })
-  content?: string | null;
-
-  @Column({
-    type: 'int',
-    name: 'up_voute',
-    nullable: true,
-  })
-  upVote?: number | null;
-  @Column({
-    type: 'int',
-    name: 'down_voute',
-    nullable: true,
-  })
-  downVote?: number | null;
+  content: string;
 
   @Column({
     type: 'int',
@@ -51,10 +37,19 @@ export class SharedDataEntity extends BaseEntity {
     nullable: true,
   })
   createdById?: number | null;
+
   @ManyToOne(() => UserEntity)
   @JoinColumn({
     name: 'created_by_id',
     referencedColumnName: 'id',
   })
   user: UserEntity | null;
+
+  @Column()
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Column()
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
