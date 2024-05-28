@@ -1,6 +1,6 @@
 import { SharedDataEntity } from '@/entities/sharedData.entity';
 import Container, { Service } from 'typedi';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Not, Repository } from 'typeorm';
 import { TypeOrmDBConnectionHolder } from './db.service';
 import { SharedData } from '@/interfaces/shared_data.interface';
 import { HttpException } from '@/exceptions/HttpException';
@@ -21,10 +21,14 @@ export class SharedService extends Repository<SharedDataEntity> {
 
   public async getMyShared(user: User): Promise<SharedData[]> {
     const repo = this._getTypeORMRepository();
-    const res = await repo.find({ where: { createdById: user.id } });
+    const res = await repo.find({ relations: ['user'], where: { createdById: user.id } });
     return res;
   }
-
+  public async getSharedByOther(user: User): Promise<SharedData[]> {
+    const repo = this._getTypeORMRepository();
+    const res = await repo.find({ relations: ['user'], where: { createdById: Not(user.id) } });
+    return res;
+  }
   _getTypeORMRepository(): Repository<SharedDataEntity> {
     const _db = Container.get(TypeOrmDBConnectionHolder);
     const db = _db.getInstance();

@@ -73,7 +73,21 @@ export class UserController {
   public getSharedByOther = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { user } = req;
-      const resp: UserNotification[] = await this.userNotification.getInfoNotificationExcept(user);
+      const resp: SharedData[] = await this.shared.getSharedByOther(user);
+      res.status(201).json({ data: resp });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getMyNotification = async (req: RequestWithUser, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { user } = req;
+      const { offset, limit } = req.query;
+      const resp: { items: UserNotification[]; total: number } = await this.userNotification.findByUserId(user.id, {
+        limit: +limit || 20,
+        skip: +offset || 0,
+      });
       res.status(201).json({ data: resp });
     } catch (error) {
       next(error);
