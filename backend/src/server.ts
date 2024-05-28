@@ -4,6 +4,6 @@ import { UserRoute } from './routes/user.route';
 import { Socket } from './socket';
 
 const app = new App([new AuthRoute(), new UserRoute()]);
-const socket = new Socket();
+export const socket = new Socket();
 socket.start();
 app.listen();

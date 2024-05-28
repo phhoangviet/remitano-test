@@ -1,5 +1,5 @@
 import Container, { Service } from 'typedi';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Not, Repository } from 'typeorm';
 import { User } from '@interfaces/users.interface';
 import { HttpException } from '@/exceptions/HttpException';
 import { compare, hash } from 'bcrypt';
@@ -12,7 +12,7 @@ import { sign } from 'jsonwebtoken';
 const createToken = (user: User): TokenData => {
   const dataStoredInToken: DataStoredInToken = { id: user.id };
   const secretKey: string = SECRET_KEY;
-  const expiresIn: number = 60 * 60;
+  const expiresIn: number = 24 * 60 * 60;
 
   return { expiresIn, token: sign(dataStoredInToken, secretKey, { expiresIn }) };
 };
@@ -41,6 +41,13 @@ export class AuthService extends Repository<UserEntity> {
 
     return findUser;
   }
+
+  public async findAllUserExcept(ignoreId: number): Promise<User[]> {
+    const repo = this._getTypeORMRepository();
+    const findUsers: User[] = await repo.find({ where: { id: Not(ignoreId) } });
+    return findUsers;
+  }
+
   public async login(userData: User): Promise<{ cookie: string; findUser: User; tokenData: TokenData }> {
     const repo = this._getTypeORMRepository();
     const findUser: User = await repo.findOne({ where: { email: userData.email } });

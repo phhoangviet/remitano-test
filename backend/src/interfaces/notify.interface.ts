@@ -1,4 +1,5 @@
 export interface Notification {
+  id?: number;
   group?: string | null;
   refId?: number | null;
   refCode?: string | null;

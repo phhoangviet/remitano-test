@@ -21,7 +21,7 @@ export class TypeOrmDBConnectionHolder {
       host: POSTGRES_HOST,
       port: +POSTGRES_PORT,
       database: POSTGRES_DATABASE,
-      synchronize: false,
+      synchronize: true,
       logging: false,
       entities: ['src/entities/*.entity.ts'],
       migrations: ['src/migration/*.ts'],

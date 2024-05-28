@@ -1,14 +1,14 @@
-import { Entity, Unique, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
+import { Entity, Unique, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { NotificationEntity } from './notify.entity';
-import { UserNotify } from '@/interfaces/user_notify.interface';
+import { UserNotification } from '@/interfaces/user_notify.interface';
+import { UserEntity } from './users.entity';
 @Entity({
   name: 'user_notifications',
   orderBy: {
     createdAt: 'DESC',
   },
 })
-@Unique('UNIQUE_USER_NOTIFICATION_ENTITY', ['id'])
-export class UserNotificationsEntity implements UserNotify {
+export class UserNotificationsEntity implements UserNotification {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -26,6 +26,12 @@ export class UserNotificationsEntity implements UserNotify {
   })
   userId: number;
 
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({
+    name: 'user_id',
+    referencedColumnName: 'id',
+  })
+  user: UserEntity | null;
   @Column({
     type: 'bool',
     name: 'mark_as_read',
@@ -40,4 +46,12 @@ export class UserNotificationsEntity implements UserNotify {
     referencedColumnName: 'id',
   })
   notification: NotificationEntity | null;
+
+  @Column()
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @Column()
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

@@ -16,6 +16,12 @@ export class UserRoute implements Routes {
 
   private initializeRoutes() {
     this.router.post(`${this.path}/share`, [AuthMiddleware, ValidationMiddleware(UserShareYoutubeDto)], this.userController.handleShare);
+    this.router.get(`${this.path}/share-by-me`, [AuthMiddleware, ValidationMiddleware(UserShareYoutubeDto)], this.userController.getMyShared);
+    this.router.get(
+      `${this.path}/share-by-others`,
+      [AuthMiddleware, ValidationMiddleware(UserShareYoutubeDto)],
+      this.userController.getSharedByOther,
+    );
     // this.router.post('/login', ValidationMiddleware(CreateUserDto), this.auth.logIn);
     // this.router.post('/logout', AuthMiddleware, this.auth.logOut);
   }

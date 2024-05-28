@@ -45,8 +45,7 @@ export class AuthController {
       const userData: User = req.user;
       const user: User = await this.auth.findOneUser(userData.id);
 
-      res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
-      res.status(200).json({ data: user, message: 'Logout successfully.' });
+      res.status(200).json({ data: user, message: 'Get Info successfully.' });
     } catch (error) {
       next(error);
     }
