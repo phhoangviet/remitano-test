@@ -5,7 +5,7 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import compression from 'compression';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from './configs';
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS, WEB_HOST } from './configs';
 import { logger } from './utils/logger';
 import { ErrorMiddleware } from './middlewares/error.middleware';
 import { Routes } from './interfaces/routes.interface';
@@ -21,7 +21,7 @@ export class App {
   constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
-    this.port = PORT || 3000;
+    this.port = PORT || 8080;
 
     this.connectToDatabase();
     this.initializeMiddlewares();
@@ -47,7 +47,7 @@ export class App {
   }
 
   private initializeMiddlewares() {
-    this.app.use(cors({ origin: 'http://localhost:3001', credentials: CREDENTIALS, exposedHeaders: ['X-Set-Cookie'] }));
+    this.app.use(cors({ origin: WEB_HOST, credentials: CREDENTIALS, exposedHeaders: ['X-Set-Cookie'] }));
     // this.app.use('*', cors({ origin: ORIGIN, credentials: CREDENTIALS }));
 
     this.app.use(hpp());

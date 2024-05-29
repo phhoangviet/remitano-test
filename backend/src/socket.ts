@@ -1,6 +1,6 @@
 import express, { application } from 'express';
 import { logger } from './utils/logger';
-import { SOCKET_PORT, SOCKET_TRANSPORTS } from './configs';
+import { SOCKET_PORT, SOCKET_TRANSPORTS, WEB_HOST } from './configs';
 import { Server } from 'socket.io';
 import http from 'http';
 import { registerEvents } from './interfaces/socket/register.interface';
@@ -20,7 +20,7 @@ export class Socket {
       const socketApp = express();
       const socketConfig = this.socketConfig();
       const httpServer = http.createServer(socketApp);
-      const io = new Server(httpServer, { ...socketConfig, cookie: true, cors: { origin: 'http://localhost:3001' } });
+      const io = new Server(httpServer, { ...socketConfig, cookie: true, cors: { origin: WEB_HOST } });
       this.io = io;
 
       io.on('connection', (socket: any) => {
