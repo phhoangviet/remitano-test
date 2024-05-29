@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Entity, Unique, BaseEntity, CreateDateColumn, JoinColumn, ManyToOne, UpdateDateColumn } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, JoinColumn, ManyToOne, UpdateDateColumn } from 'typeorm';
 import { UserEntity } from './users.entity';
 import { Notification } from '@/interfaces/notify.interface';
 

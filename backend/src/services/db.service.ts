@@ -1,5 +1,6 @@
 import { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DATABASE } from '@/configs';
 import { logger } from '@/utils/logger';
+import { join } from 'path';
 import { Service } from 'typedi';
 import { createConnection, Connection, ConnectionOptions } from 'typeorm';
 
@@ -23,16 +24,20 @@ export class TypeOrmDBConnectionHolder {
       database: POSTGRES_DATABASE,
       synchronize: true,
       logging: false,
-      entities: ['src/entities/*.entity.ts'],
-      migrations: ['src/migration/*.ts'],
+      entities: [join(__dirname, '../**/*.entity{.ts,.js}')],
+      migrations: [join(__dirname, '../**/*.migration{.ts,.js}')],
       cli: {
         entitiesDir: 'src/entities',
         migrationsDir: 'src/migration',
       },
     };
-    const result = await createConnection(dbConfig);
-    logger.info(`Database - Create connection DB: connectionName: ${result.name} `);
-    return result;
+    try {
+      const result = await createConnection(dbConfig);
+      logger.info(`Database - Create connection DB: connectionName: ${result.name} `);
+      return result;
+    } catch (error) {
+      console.log(error, 'error');
+    }
   }
 
   getInstance(): Connection {

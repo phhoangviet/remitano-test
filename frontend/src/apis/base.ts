@@ -11,7 +11,7 @@ const requestConfig = {
 };
 
 const axiosInstance = axios.create(requestConfig);
-axiosInstance.defaults.withCredentials = true;
+// axiosInstance.defaults.withCredentials = true;
 const axiosExternalInstance = axios.create();
 
 axiosInstance.interceptors.request.use(async (config) => {

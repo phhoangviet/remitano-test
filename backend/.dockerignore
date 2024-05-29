@@ -1,0 +1,13 @@
+.vscode
+/node_modules
+
+.eslintrc
+.eslintignore
+.editorconfig
+.huskyrc
+.lintstagedrc.json
+.prettierrc
+
+jest.config.js
+
+Dockerfile

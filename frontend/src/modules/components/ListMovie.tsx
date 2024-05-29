@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../providers/auth/useAuth";
 import { socket } from "../socket/socket";
 import {
   Alert,
-  Box,
   Button,
   Container,
   Grid,
@@ -48,7 +47,7 @@ export const ListMovie = () => {
       }
     }
     _getMyNoti();
-  }, [toast, authenticated, dataMovie]);
+  }, [toast, authenticated, dataMovie.length]);
 
   const onClickShare = async () => {
     const { url } = getValues();

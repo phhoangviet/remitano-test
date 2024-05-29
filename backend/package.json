@@ -5,7 +5,7 @@
     "author": "",
     "license": "",
     "scripts": {
-        "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
+        "start": "npm run build && cross-env NODE_ENV=production node dist/src/server.js",
         "dev": "cross-env NODE_ENV=development nodemon",
         "build": "swc src -d dist --source-maps --copy-files",
         "build:tsc": "tsc && tsc-alias",
@@ -22,6 +22,7 @@
         "class-validator": "^0.13.2",
         "compression": "^1.7.4",
         "cookie-parser": "^1.4.6",
+        "copyfiles": "^2.4.1",
         "cors": "^2.8.5",
         "dotenv": "^16.0.1",
         "envalid": "^7.3.1",
@@ -38,12 +39,11 @@
         "underscore": "^1.13.6",
         "winston": "^3.8.1",
         "winston-daily-rotate-file": "^4.7.1",
-        "youtube-dl-exec": "^3.0.2",
         "ytdl-core": "^4.11.5"
     },
     "devDependencies": {
-        "@swc/cli": "^0.1.57",
-        "@swc/core": "^1.2.220",
+        "@swc/cli": "^0.3.12",
+        "@swc/core": "^1.5.7",
         "@types/bcrypt": "^5.0.0",
         "@types/compression": "^1.7.2",
         "@types/cookie-parser": "^1.4.3",

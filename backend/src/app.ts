@@ -30,6 +30,7 @@ export class App {
   }
 
   public listen() {
+    console.log(this.app);
     this.app.listen(this.port, () => {
       logger.info(`======= ENV: ${this.env} =======`);
       logger.info(`🚀 App listening on the port ${this.port}`);
@@ -47,7 +48,7 @@ export class App {
   }
 
   private initializeMiddlewares() {
-    this.app.use(cors({ origin: WEB_HOST, credentials: CREDENTIALS, exposedHeaders: ['X-Set-Cookie'] }));
+    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS, exposedHeaders: ['X-Set-Cookie'] }));
     // this.app.use('*', cors({ origin: ORIGIN, credentials: CREDENTIALS }));
 
     this.app.use(hpp());
